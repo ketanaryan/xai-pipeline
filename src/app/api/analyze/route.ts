@@ -37,31 +37,43 @@ export async function POST(req: Request) {
       prediction.label = "HIGH RISK: " + prediction.label;
     }
 
-    // 4. TRUE GENERATIVE AI INTEGRATION
-    // If the user has added their GEMINI_API_KEY to .env, use real LLM to generate the explanation dynamically
-    if (process.env.GEMINI_API_KEY) {
+    // 4. TRUE GENERATIVE AI INTEGRATION (GROQ - LLAMA 3)
+    if (process.env.GROQ_API_KEY) {
       try {
-        const { GoogleGenerativeAI } = require("@google/generative-ai");
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        
         const prompt = `
-          You are an Explainable AI (XAI) routing engine. 
-          The user is in the "${phase}" phase of the SDLC.
-          The input data is: ${data}
-          The AI predicted: ${prediction.label} with ${prediction.probability * 100}% confidence.
-          The target stakeholder is: ${routing.targetStakeholder}.
-          The chosen modality is: ${routing.modality}.
+          You are an Explainable AI (XAI) routing engine analyzing a software artifact.
+          Phase: "${phase}"
+          Target Stakeholder: "${routing.targetStakeholder}"
+          Explanation Modality: "${routing.modality}"
+          Input Data (The actual artifact to analyze): ${data}
           
-          Write a strict, concise, 2-sentence technical explanation of why the AI made this prediction. 
+          Task: Write a strict, concise, 2-sentence explanation of why the AI made a "${prediction.label}" prediction (with ${prediction.probability * 100}% confidence).
+          Crucially, you MUST specifically mention actual details from the Input Data (like the specific commit hash, bug description, or code snippet) to prove you analyzed it.
           Tailor the vocabulary specifically to a ${routing.targetStakeholder}.
           Do not include conversational filler, just the explanation.
         `;
-        const aiResult = await model.generateContent(prompt);
-        const responseText = await aiResult.response.text();
-        routing.explanationUI = responseText;
+
+        const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "llama3-8b-8192",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.5,
+          })
+        });
+
+        if (groqResponse.ok) {
+          const aiData = await groqResponse.json();
+          routing.explanationUI = aiData.choices[0].message.content.trim();
+        } else {
+          console.error("Groq API Error:", await groqResponse.text());
+        }
       } catch (llmError) {
-        console.error("Gemini API Error, falling back to simulated engine:", llmError);
+        console.error("Groq Network Error, falling back to simulated engine:", llmError);
       }
     }
 
