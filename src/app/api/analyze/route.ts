@@ -60,7 +60,7 @@ export async function POST(req: Request) {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: "llama3-8b-8192",
+            model: "qwen/qwen3.8-27b",
             messages: [{ role: "user", content: prompt }],
             temperature: 0.5,
           })
