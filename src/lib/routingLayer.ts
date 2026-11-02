@@ -49,7 +49,7 @@ export const routeToExplainer = (phase: SDLCPhase, prediction: AIPrediction): Ro
       return {
         modality: "Counterfactuals",
         targetStakeholder: "Site Reliability Engineers",
-        explanationUI: `Action Required: Reverting the recent configuration flag for batch-processing [False → True] will reduce crash probability from ${prediction.probability * 100}% to 14%.`
+        explanationUI: `Action Required: Reverting the recent configuration flag for batch-processing [False -> True] will reduce crash probability from ${prediction.probability * 100}% to 14%.`
       };
 
     case "Maintenance & Evolution":

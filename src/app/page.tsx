@@ -6,31 +6,86 @@ import { PresentationLayer } from '@/components/layers/PresentationLayer';
 import { AuditLogTable } from '@/components/layers/AuditLog';
 import { AnalyticsDashboard } from '@/components/layers/AnalyticsDashboard';
 import { PolicySettings } from '@/components/layers/PolicySettings';
+import { UserSessionHeader, UserSession, PRESET_USERS } from '@/components/auth/UserSessionHeader';
+import { AuthScreen } from '@/components/auth/AuthScreen';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { SDLCPhase, AIPrediction } from '@/lib/inferenceEngine';
 import { RoutingOutput } from '@/lib/routingLayer';
-import { Code, Shield, AlertTriangle, Settings } from 'lucide-react';
+import { Shield, AlertTriangle, Cpu, Database, CheckCircle2, Award } from 'lucide-react';
 
 export default function Home() {
   const [pipelineState, setPipelineState] = useState<{
     prediction: AIPrediction;
     routing: RoutingOutput;
+    telemetry?: any;
+    astMetrics?: any;
+    suggestedPatch?: any;
   } | null>(null);
+
+  const [currentPhase, setCurrentPhase] = useState<SDLCPhase>("Development");
+  const [payloadData, setPayloadData] = useState<string>(
+    `const query = "SELECT * FROM users WHERE username = '" + userInput + "';";`
+  );
+  const [selectedModel, setSelectedModel] = useState<string>("qwen/qwen3.8-27b");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshLogs, setRefreshLogs] = useState(0);
-  const [riskThreshold, setRiskThreshold] = useState(0.8);
+  const [riskThreshold, setRiskThreshold] = useState(0.75);
+  const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
 
-  const handleAnalyze = async (phase: SDLCPhase, data: string) => {
+  React.useEffect(() => {
+    try {
+      const stored = localStorage.getItem('xai_auth_user');
+      if (stored) {
+        setCurrentUser(JSON.parse(stored));
+      } else {
+        // Initialize default authenticated session for Yash Pable
+        setCurrentUser(PRESET_USERS[0]);
+        localStorage.setItem('xai_auth_user', JSON.stringify(PRESET_USERS[0]));
+      }
+    } catch (e) {
+      setCurrentUser(PRESET_USERS[0]);
+    } finally {
+      setIsAuthChecking(false);
+    }
+  }, []);
+
+  const handleLoginSuccess = (user: UserSession) => {
+    setCurrentUser(user);
+    try {
+      localStorage.setItem('xai_auth_user', JSON.stringify(user));
+    } catch (e) {}
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    try {
+      localStorage.removeItem('xai_auth_user');
+    } catch (e) {}
+  };
+
+  const handleAnalyze = async (phase: SDLCPhase, data: string, model?: string) => {
     setIsLoading(true);
     setError(null);
     setPipelineState(null);
+
+    const activeModel = model || selectedModel;
 
     try {
       const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phase, data, riskThreshold }),
+        body: JSON.stringify({ 
+          phase, 
+          data, 
+          riskThreshold, 
+          model: activeModel,
+          userId: currentUser?.id,
+          userName: currentUser?.name || "Yash Pable",
+          userEmail: currentUser?.email || "yash.pable@sitrc.ac.in",
+          userRole: currentUser?.role || "DEVELOPER"
+        }),
       });
 
       if (!response.ok) {
@@ -47,66 +102,143 @@ export default function Home() {
     }
   };
 
+  const handleApplyPatch = (patchedCode: string) => {
+    setPayloadData(patchedCode);
+    handleAnalyze(currentPhase, patchedCode, selectedModel);
+  };
+
+  if (!currentUser && !isAuthChecking) {
+    return <AuthScreen onSuccess={handleLoginSuccess} />;
+  }
+
+  if (isAuthChecking) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center font-mono text-xs text-indigo-400">
+        <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl shadow-xl">
+          Verifying Authenticated Operator Session...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans selection:bg-indigo-500/30 selection:text-indigo-900 pb-20 relative overflow-hidden">
       
-      {/* Premium Background Glow Effects */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] rounded-full bg-blue-500/10 blur-[120px] pointer-events-none" />
+      {/* Background Ambient Gradients */}
+      <div className="absolute top-[-10%] left-[-10%] w-[45%] h-[45%] rounded-full bg-indigo-500/10 blur-[140px] pointer-events-none" />
+      <div className="absolute top-[20%] right-[-10%] w-[35%] h-[55%] rounded-full bg-rose-500/10 blur-[140px] pointer-events-none" />
+
+      {/* Top Academic & Institutional Banner */}
+      <div className="bg-slate-900 text-slate-300 text-[11px] font-mono py-1.5 px-4 border-b border-slate-800">
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="font-semibold text-white">SITRC Nashik</span> &bull; 
+            <span>Department of Computer Engineering</span> &bull; 
+            <span className="text-slate-400">Savitribai Phule Pune University (SPPU)</span>
+          </div>
+          <div className="flex items-center gap-3 text-slate-400">
+            <span>Guide: <strong className="text-slate-200">Prof. Kayyum Shaikh</strong></span>
+            <span>&bull;</span>
+            <span>Project Stage-I Final Defense</span>
+          </div>
+        </div>
+      </div>
 
       {/* Header */}
-      <header className="bg-white/70 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-20 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-slate-800 to-slate-950 rounded-xl flex items-center justify-center shadow-md shadow-slate-900/20 shrink-0 border border-slate-700">
-              <Shield className="w-4 h-4 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-slate-900 rounded-xl flex items-center justify-center shadow-md shadow-indigo-600/20 shrink-0 border border-indigo-500/30">
+              <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-[13px] font-bold tracking-wider text-slate-900 uppercase">XAI SDLC Framework</h1>
-              <p className="text-[10px] text-slate-500 font-mono tracking-[0.2em] hidden sm:block uppercase mt-0.5">Phase-Specific Routing Engine</p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-sm font-bold tracking-wider text-slate-900 uppercase">XAI SDLC Framework</h1>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-100 text-indigo-700">v1.0 Production</span>
+              </div>
+              <p className="text-[11px] text-slate-500 font-mono tracking-wide mt-0.5">
+                Phase-Specific Routing & Autonomous Policy Interception
+              </p>
             </div>
           </div>
-          <div className="text-[10px] sm:text-xs font-semibold tracking-wide text-slate-600 flex items-center px-3.5 py-1.5 bg-white border border-slate-200 shadow-sm rounded-full">
-            <Code className="w-3.5 h-3.5 mr-2 text-indigo-500" />
-            Production Ready
+
+          <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+            {currentUser && <UserSessionHeader currentUser={currentUser} onLogout={handleLogout} />}
+            <span className="px-3 py-1 bg-white border border-slate-200 rounded-full shadow-sm text-slate-700 flex items-center">
+              <Cpu className="w-3.5 h-3.5 mr-1.5 text-rose-500" />
+              Groq LPU Active (Sub-400ms)
+            </span>
+            <span className="px-3 py-1 bg-white border border-slate-200 rounded-full shadow-sm text-slate-700 flex items-center">
+              <Database className="w-3.5 h-3.5 mr-1.5 text-emerald-500" />
+              Neon Postgres ACID
+            </span>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20 relative z-0">
+      {/* Main Container */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative z-0">
         
-        {/* Intro */}
-        <div className="mb-12 sm:mb-16 max-w-3xl">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-slate-900 mb-5 tracking-tight">Contextual AI Transparency</h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
-            This dashboard demonstrates the dynamic routing architecture for Explainable AI (XAI) across the software development lifecycle. By decoupling the predictive model from the explanation engine, the system ensures that different stakeholders receive mathematically tailored explanations via an enterprise-grade backend pipeline.
+        {/* Intro Banner */}
+        <div className="mb-8 max-w-3xl">
+          <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 uppercase tracking-wider inline-block mb-3">
+            Decoupled Contextual Architecture
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight">
+            Explainable AI (XAI) for Software Lifecycle
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+            A phase-specific framework mapping black-box predictive models to tailored explainability modalities (Attention, Local SHAP, Rule Extraction, Counterfactuals) across the SDLC with automated risk-based policy interception.
           </p>
         </div>
 
         {/* Pipeline Interface */}
         <div className="space-y-6">
-          <PolicySettings riskThreshold={riskThreshold} setRiskThreshold={setRiskThreshold} />
+          {/* Policy Settings Bar */}
+          <PolicySettings 
+            riskThreshold={riskThreshold} 
+            setRiskThreshold={setRiskThreshold} 
+            currentUser={currentUser || undefined}
+          />
           
-          <InputLayer onAnalyze={handleAnalyze} isLoading={isLoading} />
+          {/* Input Layer */}
+          <InputLayer 
+            onAnalyze={handleAnalyze} 
+            isLoading={isLoading}
+            activePhase={currentPhase}
+            setActivePhase={setCurrentPhase}
+            data={payloadData}
+            setData={setPayloadData}
+            selectedModel={selectedModel}
+            setSelectedModel={setSelectedModel}
+          />
           
+          {/* Error Banner */}
           {error && (
-            <div className="flex items-center p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
-              <AlertTriangle className="w-4 h-4 mr-3 shrink-0" />
+            <div className="flex items-center p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs sm:text-sm shadow-sm font-mono">
+              <AlertTriangle className="w-4 h-4 mr-3 shrink-0 text-rose-500" />
               {error}
             </div>
           )}
 
+          {/* Loading Animation */}
           {isLoading && !error && (
             <div className="mt-8">
-              <LoadingSpinner text="Simulating Backend AI Inference..." />
+              <LoadingSpinner text="Executing Groq LPU Inference & Contextual Modality Routing..." />
             </div>
           )}
           
+          {/* Output Presentation Layer */}
           {pipelineState && !isLoading && (
             <PresentationLayer 
               prediction={pipelineState.prediction} 
-              routing={pipelineState.routing} 
+              routing={pipelineState.routing}
+              telemetry={pipelineState.telemetry}
+              suggestedPatch={pipelineState.suggestedPatch}
+              astMetrics={pipelineState.astMetrics}
+              onApplyPatch={handleApplyPatch}
+              currentUser={currentUser || undefined}
             />
           )}
 
@@ -114,10 +246,20 @@ export default function Home() {
           <AnalyticsDashboard refreshTrigger={refreshLogs} />
 
           {/* Database Audit Log */}
-          <AuditLogTable refreshTrigger={refreshLogs} />
+          <AuditLogTable refreshTrigger={refreshLogs} currentUser={currentUser || undefined} />
         </div>
 
       </main>
+
+      {/* Footer */}
+      <footer className="mt-20 border-t border-slate-200 bg-white/60 py-8 text-center text-xs font-mono text-slate-500">
+        <p className="font-semibold text-slate-700">
+          Sandip Institute of Technology & Research Centre (SITRC), Nashik &bull; Academic Year 2026 - 2027
+        </p>
+        <p className="mt-1 text-slate-400">
+          Project Team: Yash Pable (112023528), Samrudha Badgujar (112023517), Chetan Desale (112023515), Payal Attarde (112023525)
+        </p>
+      </footer>
     </div>
   );
 }

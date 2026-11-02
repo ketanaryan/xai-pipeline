@@ -7,13 +7,16 @@ export async function GET() {
       orderBy: { createdAt: 'desc' }
     });
 
-    // Create CSV header
-    let csv = 'ID,Phase,AI_Prediction_Label,AI_Probability,XAI_Modality,Created_At\n';
+    // Create CSV header with operator governance tracking
+    let csv = 'ID,Phase,AI_Prediction_Label,AI_Probability,XAI_Modality,Operator_Name,Operator_Email,Operator_Role,Created_At\n';
 
     // Add rows
     logs.forEach(log => {
       const escapedLabel = `"${log.aiPredictionLabel.replace(/"/g, '""')}"`;
-      csv += `${log.id},${log.phase},${escapedLabel},${log.aiProbability},${log.xaiModality},${log.createdAt.toISOString()}\n`;
+      const operatorName = `"${(log.userName || 'System').replace(/"/g, '""')}"`;
+      const operatorEmail = `"${(log.userEmail || 'system@sitrc.ac.in').replace(/"/g, '""')}"`;
+      const operatorRole = `"${(log.userRole || 'DEVELOPER').replace(/"/g, '""')}"`;
+      csv += `${log.id},${log.phase},${escapedLabel},${log.aiProbability},${log.xaiModality},${operatorName},${operatorEmail},${operatorRole},${log.createdAt.toISOString()}\n`;
     });
 
     return new NextResponse(csv, {
