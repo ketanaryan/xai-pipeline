@@ -56,6 +56,8 @@ export async function POST(req: Request) {
       groqId: "simulated-lpu-edge"
     };
 
+    const effectiveGroqKey = process.env.GROQ_API_KEY ? process.env.GROQ_API_KEY.trim().replace(/^["']|["']$/g, '') : "";
+
     if (selectedModel === "ast-deterministic") {
       telemetry = {
         model: "AST Deterministic Software Science Engine",
@@ -65,7 +67,7 @@ export async function POST(req: Request) {
         lpuExecutionTimeMs: 14,
         groqId: "offline-ast-kernel-deterministic"
       };
-    } else if (process.env.GROQ_API_KEY) {
+    } else if (effectiveGroqKey) {
       try {
         const prompt = `
 You are an Explainable AI (XAI) routing engine analyzing a software artifact in a modern DevSecOps pipeline.
@@ -88,12 +90,11 @@ Do NOT output conversational filler or preamble.
 
         const targetModel = selectedModel || "qwen/qwen3.8-27b";
         const groqStart = Date.now();
-        const cleanApiKey = process.env.GROQ_API_KEY.trim().replace(/^["']|["']$/g, '');
 
         const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${cleanApiKey}`,
+            "Authorization": `Bearer ${effectiveGroqKey}`,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
