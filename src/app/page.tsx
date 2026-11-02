@@ -11,7 +11,7 @@ import { AuthScreen } from '@/components/auth/AuthScreen';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { SDLCPhase, AIPrediction } from '@/lib/inferenceEngine';
 import { RoutingOutput } from '@/lib/routingLayer';
-import { Shield, AlertTriangle, Cpu, Database, CheckCircle2, Award } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle2, Award } from 'lucide-react';
 
 export default function Home() {
   const [pipelineState, setPipelineState] = useState<{
@@ -150,18 +150,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono">
+          <div className="flex items-center gap-3">
             {currentUser && <UserSessionHeader currentUser={currentUser} onLogout={handleLogout} />}
-            <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl shadow-xs text-slate-700 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <Cpu className="w-3.5 h-3.5 text-rose-500" />
-              <span>Groq LPU (Sub-400ms)</span>
-            </span>
-            <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl shadow-xs text-slate-700 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <Database className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Neon ACID Ledger</span>
-            </span>
           </div>
         </div>
       </header>
