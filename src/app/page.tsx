@@ -128,50 +128,39 @@ export default function Home() {
       <div className="absolute top-[-10%] left-[-10%] w-[45%] h-[45%] rounded-full bg-indigo-500/10 blur-[140px] pointer-events-none" />
       <div className="absolute top-[20%] right-[-10%] w-[35%] h-[55%] rounded-full bg-rose-500/10 blur-[140px] pointer-events-none" />
 
-      {/* Top Academic & Institutional Banner */}
-      <div className="bg-slate-900 text-slate-300 text-[11px] font-mono py-1.5 px-4 border-b border-slate-800">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-semibold text-white">SITRC Nashik</span> &bull; 
-            <span>Department of Computer Engineering</span> &bull; 
-            <span className="text-slate-400">Savitribai Phule Pune University (SPPU)</span>
-          </div>
-          <div className="flex items-center gap-3 text-slate-400">
-            <span>Guide: <strong className="text-slate-200">Prof. Kayyum Shaikh</strong></span>
-            <span>&bull;</span>
-            <span>Project Stage-I Final Defense</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-20 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      {/* Enterprise Top Navigation Header */}
+      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-20 shadow-xs">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-slate-900 rounded-xl flex items-center justify-center shadow-md shadow-indigo-600/20 shrink-0 border border-indigo-500/30">
-              <Shield className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 bg-gradient-to-br from-indigo-600 to-slate-900 rounded-xl flex items-center justify-center shadow-md shadow-indigo-600/20 shrink-0 border border-indigo-500/30 text-white">
+              <Shield className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-sm font-bold tracking-wider text-slate-900 uppercase">XAI SDLC Framework</h1>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-100 text-indigo-700">v1.0 Production</span>
+                <h1 className="text-sm font-extrabold tracking-wider text-slate-900 font-mono uppercase">
+                  COGNIGUARD <span className="text-indigo-600">XAI</span>
+                </h1>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 uppercase tracking-wider">
+                  Enterprise Platform
+                </span>
               </div>
               <p className="text-[11px] text-slate-500 font-mono tracking-wide mt-0.5">
-                Phase-Specific Routing & Autonomous Policy Interception
+                Phase-Specific Explainability & Autonomous Policy Interception
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono">
             {currentUser && <UserSessionHeader currentUser={currentUser} onLogout={handleLogout} />}
-            <span className="px-3 py-1 bg-white border border-slate-200 rounded-full shadow-sm text-slate-700 flex items-center">
-              <Cpu className="w-3.5 h-3.5 mr-1.5 text-rose-500" />
-              Groq LPU Active (Sub-400ms)
+            <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl shadow-xs text-slate-700 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <Cpu className="w-3.5 h-3.5 text-rose-500" />
+              <span>Groq LPU (Sub-400ms)</span>
             </span>
-            <span className="px-3 py-1 bg-white border border-slate-200 rounded-full shadow-sm text-slate-700 flex items-center">
-              <Database className="w-3.5 h-3.5 mr-1.5 text-emerald-500" />
-              Neon Postgres ACID
+            <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl shadow-xs text-slate-700 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <Database className="w-3.5 h-3.5 text-emerald-500" />
+              <span>Neon ACID Ledger</span>
             </span>
           </div>
         </div>
@@ -180,16 +169,16 @@ export default function Home() {
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative z-0">
         
-        {/* Intro Banner */}
+        {/* Intro Hero Banner */}
         <div className="mb-8 max-w-3xl">
-          <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 uppercase tracking-wider inline-block mb-3">
-            Decoupled Contextual Architecture
+          <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 uppercase tracking-[0.2em] inline-block mb-3">
+            CONTINUOUS GOVERNANCE & EXPLAINABILITY PLATFORM
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight">
-            Explainable AI (XAI) for Software Lifecycle
+            Cognitive Guardrails for Software Development Lifecycles
           </h2>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            A phase-specific framework mapping black-box predictive models to tailored explainability modalities (Attention, Local SHAP, Rule Extraction, Counterfactuals) across the SDLC with automated risk-based policy interception.
+            A phase-specific framework mapping black-box predictive models to tailored explainability modalities (Attention, Local SHAP, Rule Extraction, Counterfactuals) across all 6 SDLC phases with automated risk-based policy interception.
           </p>
         </div>
 
@@ -251,14 +240,26 @@ export default function Home() {
 
       </main>
 
-      {/* Footer */}
-      <footer className="mt-20 border-t border-slate-200 bg-white/60 py-8 text-center text-xs font-mono text-slate-500">
-        <p className="font-semibold text-slate-700">
-          Sandip Institute of Technology & Research Centre (SITRC), Nashik &bull; Academic Year 2026 - 2027
-        </p>
-        <p className="mt-1 text-slate-400">
-          Project Team: Yash Pable (112023528), Samrudha Badgujar (112023517), Chetan Desale (112023515), Payal Attarde (112023525)
-        </p>
+      {/* Sleek Enterprise Footer */}
+      <footer className="mt-20 border-t border-slate-200 bg-white/70 py-8 text-xs font-mono text-slate-500">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-slate-700">
+            <Shield className="w-4 h-4 text-indigo-600" />
+            <span className="font-bold">CogniGuard XAI Platform</span>
+            <span>&bull;</span>
+            <span className="text-slate-500">Continuous DevSecOps Intelligence</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-slate-500">
+            <span className="flex items-center gap-1.5 text-emerald-600 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              All Systems Operational
+            </span>
+            <span>&bull;</span>
+            <span>NIST AI RMF 1.0</span>
+            <span>&bull;</span>
+            <span>ISO/IEC 42001:2023</span>
+          </div>
+        </div>
       </footer>
     </div>
   );

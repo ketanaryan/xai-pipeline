@@ -23,7 +23,7 @@ export const PRESET_USERS: UserSession[] = [
     email: "yash.pable@sitrc.ac.in",
     role: "DEVELOPER",
     avatar: "YP",
-    department: "Department of Computer Engineering, SITRC (Seat 112023528)"
+    department: "Core Architecture & Platform Engineering"
   },
   {
     id: "ab53efaf-7d45-4935-af14-c41c888a6361",
@@ -31,7 +31,7 @@ export const PRESET_USERS: UserSession[] = [
     email: "alex.vance@sitrc.ac.in",
     role: "SECURITY_LEAD",
     avatar: "AV",
-    department: "DevSecOps & Security Center of Excellence"
+    department: "DevSecOps & Threat Mitigation Center"
   },
   {
     id: "334d790e-3350-4cef-afd3-31c29ac39480",
@@ -47,7 +47,7 @@ export const PRESET_USERS: UserSession[] = [
     email: "david.chen@sppu.ac.in",
     role: "NIST_AUDITOR",
     avatar: "DC",
-    department: "Regulatory Governance Board, SPPU Pune"
+    department: "Regulatory Compliance & Algorithmic Audit"
   },
   {
     id: "06a94bbe-7f32-4b24-a9dd-a0b7a5ee5dd3",

@@ -38,7 +38,7 @@ const PRESET_DEMO_ACCOUNTS = [
     name: "David Chen",
     email: "david.chen@sppu.ac.in",
     role: "NIST_AUDITOR",
-    roleName: "SPPU Auditor",
+    roleName: "NIST Auditor",
     icon: "📋"
   }
 ];
@@ -51,7 +51,7 @@ export function AuthScreen({ onSuccess }: AuthScreenProps) {
   const [password, setPassword] = useState('password123');
   const [name, setName] = useState('');
   const [role, setRole] = useState('DEVELOPER');
-  const [department, setDepartment] = useState('Department of Computer Engineering, SITRC');
+  const [department, setDepartment] = useState('Core Architecture & Platform Engineering');
 
   // UI State
   const [isLoading, setIsLoading] = useState(false);
@@ -108,22 +108,22 @@ export function AuthScreen({ onSuccess }: AuthScreenProps) {
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/15 blur-[160px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-rose-600/10 blur-[160px] pointer-events-none" />
 
-      {/* Top Academic Header */}
+      {/* Top Enterprise Header */}
       <div className="text-center mb-6 max-w-lg">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] font-mono text-indigo-400 mb-3 shadow-inner">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-mono text-indigo-400 mb-3 shadow-inner tracking-widest uppercase">
           <Terminal className="w-3.5 h-3.5" />
-          <span>SITRC Nashik &bull; SPPU Academic Year 2026 - 2027</span>
+          <span>ENTERPRISE GOVERNANCE CONSOLE</span>
         </div>
         <div className="flex items-center justify-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-lg shadow-indigo-500/30 text-white">
             <Shield className="w-6 h-6" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            XAI SDLC Portal
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-mono">
+            COGNIGUARD <span className="text-indigo-400">XAI</span>
           </h1>
         </div>
         <p className="text-xs text-slate-400 font-mono">
-          Phase-Specific Explainable Artificial Intelligence Framework &bull; Stage-I
+          Continuous Model Accountability & DevSecOps Policy Governance
         </p>
       </div>
 
@@ -201,19 +201,19 @@ export function AuthScreen({ onSuccess }: AuthScreenProps) {
                     <option value="DEVELOPER">Lead Developer</option>
                     <option value="SECURITY_LEAD">DevSecOps Lead</option>
                     <option value="QA_ENGINEER">QA Lead</option>
-                    <option value="NIST_AUDITOR">NIST / SPPU Auditor</option>
+                    <option value="NIST_AUDITOR">NIST Compliance Auditor</option>
                     <option value="ARCHITECT">Software Architect</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-mono text-slate-400 mb-1.5 font-semibold">
-                    Department
+                    Department / Division
                   </label>
                   <input
                     type="text"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    placeholder="SITRC / SPPU"
+                    placeholder="Core Platform / DevSecOps"
                     className="w-full px-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
                   />
                 </div>
@@ -223,7 +223,7 @@ export function AuthScreen({ onSuccess }: AuthScreenProps) {
 
           <div>
             <label className="block text-xs font-mono text-slate-400 mb-1.5 font-semibold">
-              Institutional Email
+              Enterprise Email
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
@@ -232,7 +232,7 @@ export function AuthScreen({ onSuccess }: AuthScreenProps) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="user@sitrc.ac.in"
+                placeholder="user@cogniguard.io"
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 font-mono"
               />
             </div>

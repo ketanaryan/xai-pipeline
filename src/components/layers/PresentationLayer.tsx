@@ -782,7 +782,7 @@ export function PresentationLayer({
               <div className="border-b-2 border-slate-900 pb-5 mb-5 flex items-start justify-between">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-indigo-700 font-bold block mb-1">
-                    Department of Computer Engineering &bull; SITRC Nashik
+                    Enterprise AI Safety & Regulatory Compliance Directorate
                   </span>
                   <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
                     Official AI Governance & Explainability Certificate
@@ -865,15 +865,15 @@ export function PresentationLayer({
                 <div className="pt-8 border-t border-slate-300 grid grid-cols-3 gap-4 text-center text-[10px] text-slate-600">
                   <div className="border-t border-slate-400 pt-1">
                     <strong>Prof. Kayyum Shaikh</strong>
-                    <span className="block text-slate-400">Project Guide, SITRC</span>
+                    <span className="block text-slate-400">Chief Academic Evaluator & Guide</span>
                   </div>
                   <div className="border-t border-slate-400 pt-1">
-                    <strong>SPPU External Examiner</strong>
-                    <span className="block text-slate-400">Board of Studies Evaluator</span>
+                    <strong>External Governance Board</strong>
+                    <span className="block text-slate-400">Independent Compliance Examiner</span>
                   </div>
                   <div className="border-t border-slate-400 pt-1">
-                    <strong>Neon PostgreSQL Ledger</strong>
-                    <span className="block text-slate-400">Immutable Cryptographic Audit</span>
+                    <strong>Neon Cloud ACID Ledger</strong>
+                    <span className="block text-slate-400">Cryptographic Attestation</span>
                   </div>
                 </div>
               </div>
