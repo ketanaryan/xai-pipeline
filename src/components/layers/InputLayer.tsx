@@ -339,11 +339,12 @@ ${result.payload.git_diff}`
         })}
       </div>
 
-      {/* One-Click Presets Strip */}
+      {/* One-Click Pre-Loaded Test Scenarios Strip */}
       <div className="mb-4 p-3 rounded-xl bg-slate-50/80 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center text-xs font-semibold text-slate-700 shrink-0">
           <Sparkles className="w-3.5 h-3.5 mr-1.5 text-indigo-600" />
-          Quick Load Scenarios:
+          <span>Pre-Loaded Test Cases:</span>
+          <span className="hidden sm:inline-block ml-1.5 text-[10px] font-normal text-slate-400">(Click to auto-load sample)</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {PRESETS[activePhase]?.map((preset, idx) => (
@@ -360,44 +361,6 @@ ${result.payload.git_diff}`
         </div>
       </div>
 
-      {/* Dynamic Model & Inference Engine Selector */}
-      <div className="mb-5 p-3 rounded-xl bg-slate-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md border border-slate-800">
-        <div className="flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-rose-400" />
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
-            Inference Engine:
-          </span>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 flex-1">
-          {AVAILABLE_MODELS.map((m) => {
-            const isSelected = selectedModel === m.id;
-            return (
-              <button
-                type="button"
-                key={m.id}
-                disabled={isLoading}
-                onClick={() => setSelectedModel(m.id)}
-                className={`px-2.5 py-1.5 rounded-lg text-left text-xs font-mono transition-all flex flex-col justify-center border ${
-                  isSelected
-                    ? 'bg-indigo-600 border-indigo-400 text-white shadow-sm ring-1 ring-white/30'
-                    : 'bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white'
-                } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                title={m.type}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-bold flex items-center gap-1 truncate">
-                    <span>{m.icon}</span>
-                    <span className="truncate">{m.name}</span>
-                  </span>
-                  <span className="text-[10px] opacity-80 shrink-0 ml-1">{m.latency}</span>
-                </div>
-                <span className="text-[9px] text-slate-300 truncate mt-0.5">{m.type}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Input Form with Code Editor Styling */}
       <form onSubmit={handleSubmit} className="relative">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-3 bg-slate-100/60 p-3 rounded-xl border border-slate-200">
@@ -405,6 +368,10 @@ ${result.payload.git_diff}`
             <span className="text-xs font-bold text-slate-800">Software Artifact Payload</span>
             <span className="text-[10px] font-mono text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
               {data.length} chars
+            </span>
+            <span className="text-[10px] font-mono text-slate-600 bg-slate-200/70 px-2 py-0.5 rounded flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Qwen 2.5 Active</span>
             </span>
           </div>
           
