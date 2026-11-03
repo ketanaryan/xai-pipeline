@@ -149,19 +149,45 @@ export const runInference = (input: AIInput): AIPrediction => {
     }
 
     case "Deployment & Monitoring": {
-      const crashHints = ["spike", "oom", "memory", "cpu", "500", "502", "latency", "pod", "kill", "crashloopbackoff", "137"];
+      const crashHints = ["spike", "oom", "memory", "cpu", "500", "502", "504", "timeout", "latency", "pod", "kill", "crashloopbackoff", "137", "exceeded", "function_invocation_timeout"];
       const isCritical = crashHints.some(c => text.includes(c));
+      const isVercel = text.includes("vercel") || text.includes("serverless") || text.includes("504") || text.includes("timeout");
+
+      const vercelPatch = `// VERCEL SERVERLESS CONFIGURATION RECTIFICATION (vercel.json):
+{
+  "functions": {
+    "api/**/*.ts": {
+      "memory": 2048,       // Doubled execution memory buffer from 1024MB -> 2048MB
+      "maxDuration": 30      // Extended timeout threshold from 15s -> 30s
+    }
+  }
+}`;
+
+      const k8sPatch = `# KUBERNETES MANIFEST RECTIFICATION:
+resources:
+  limits:
+    memory: "4096Mi" # Doubled memory allocation buffer
+    cpu: "2000m"
+  requests:
+    memory: "2048Mi"
+# Horizontal Pod Autoscaling (HPA): Min: 3, Max: 10 replicas`;
 
       return {
-        probability: isCritical ? 0.96 : 0.28,
-        label: isCritical ? "Imminent Pod OOM / Resource Exhaustion Crash" : "Cluster Telemetry Healthy (Normal Latency)",
+        probability: isCritical ? 0.95 : 0.18,
+        label: isCritical 
+          ? (isVercel ? "Vercel Serverless Timeout / Memory Ceiling Breach (504)" : "Imminent Pod OOM / Resource Exhaustion Crash (Exit Code 137)")
+          : (isVercel ? "Vercel Edge Telemetry Healthy (Sub-150ms Latency)" : "Cluster Telemetry Healthy (Normal Latency)"),
         metadata: { 
-          cause: isCritical ? "Container memory exhaustion (OOMKilled) / batch buffer spike" : "Nominal CPU load",
-          metricThreshold: isCritical ? "> 85.0% memory limit breached" : "< 45% nominal load",
+          cause: isCritical 
+            ? (isVercel ? "Vercel Serverless invocation duration exceeded maximum threshold or 1024MB memory cap" : "Container memory exhaustion (OOMKilled) / batch buffer spike")
+            : "Nominal workload across active edge workers",
+          metricThreshold: isCritical ? "> 85.0% resource ceiling breached" : "< 45% nominal load",
           suggestedPatch: {
             original: input.data,
-            patched: `# KUBERNETES MANIFEST RECTIFICATION:\nresources:\n  limits:\n    memory: "4096Mi" # Doubled buffer\n    cpu: "2000m"\n  requests:\n    memory: "2048Mi"\n# Autoscaling: MinReplicas: 3, MaxReplicas: 10`,
-            explanation: 'Applied counterfactual resource limits and Horizontal Pod Autoscaler configuration to remediate CrashLoopBackOff.'
+            patched: isVercel ? vercelPatch : k8sPatch,
+            explanation: isVercel 
+              ? "Applied counterfactual serverless memory scaling and timeout extension to remediate 504 Gateway Timeouts."
+              : "Applied counterfactual resource limits and Horizontal Pod Autoscaler configuration to remediate CrashLoopBackOff."
           }
         }
       };

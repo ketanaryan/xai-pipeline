@@ -126,6 +126,20 @@ const PRESETS: Record<SDLCPhase, { label: string; text: string }[]> = {
   ],
   "Deployment & Monitoring": [
     {
+      label: "🚨 Vercel Serverless 504 Timeout",
+      text: JSON.stringify({
+        platform: "Vercel Serverless Edge Runtime",
+        deployment_url: "xai-pipeline.vercel.app",
+        edge_region: "iad1",
+        status_code: 504,
+        execution_duration_ms: 14980,
+        memory_used_mb: 1018,
+        memory_limit_mb: 1024,
+        error: "FUNCTION_INVOCATION_TIMEOUT",
+        reason: "Serverless function execution exceeded 15.00s maximum duration threshold"
+      }, null, 2)
+    },
+    {
       label: "🚨 Kubernetes Pod OOMKilled",
       text: JSON.stringify({
         cluster_name: "prod-us-east-k8s",
@@ -139,13 +153,16 @@ const PRESETS: Record<SDLCPhase, { label: string; text: string }[]> = {
       }, null, 2)
     },
     {
-      label: "⚠️ Ingress 504 Gateway Timeout",
+      label: "✅ Live Healthy Edge Telemetry",
       text: JSON.stringify({
-        ingress: "api.gateway.internal",
-        status_code: 504,
-        upstream_response_time: 4.82,
-        active_connections: 4500,
-        circuit_breaker_state: "OPEN"
+        platform: "Vercel Serverless Edge Runtime",
+        deployment_url: "xai-pipeline.vercel.app",
+        edge_region: "cle1",
+        status_code: 200,
+        execution_duration_ms: 140,
+        memory_used_mb: 118,
+        memory_limit_mb: 1024,
+        live_runtime_status: "HEALTHY"
       }, null, 2)
     }
   ],
@@ -184,7 +201,7 @@ const INTEGRATIONS: Record<SDLCPhase, { tool: string; icon: React.ReactNode }> =
     icon: <ShieldCheck className="w-3.5 h-3.5 mr-2 text-emerald-500" />
   },
   "Deployment & Monitoring": {
-    tool: "Datadog",
+    tool: "Vercel Runtime Logs",
     icon: <Activity className="w-3.5 h-3.5 mr-2 text-purple-500" />
   },
   "Maintenance & Evolution": {
