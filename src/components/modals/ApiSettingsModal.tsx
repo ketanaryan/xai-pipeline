@@ -337,33 +337,27 @@ export function ApiSettingsModal({ isOpen, onClose, onSaved }: ApiSettingsModalP
               )}
             </div>
 
-            {/* Datadog APM */}
+            {/* Vercel & Datadog Telemetry */}
             <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-slate-800 flex items-center gap-1.5">
                   <Activity className="w-3.5 h-3.5 text-purple-600" />
-                  Datadog APM & K8s
+                  Vercel Edge & Datadog APM
                 </span>
-                <button
-                  type="button"
-                  onClick={() => handleTestConnection('datadog')}
-                  className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 underline"
-                >
-                  Test
-                </button>
+                <span className="text-[10px] font-mono text-emerald-600 font-bold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Vercel Live
+                </span>
+              </div>
+              <div className="p-2 rounded bg-white border border-slate-200 text-[10px] text-slate-600 flex items-center justify-between">
+                <span>Native Edge Worker Telemetry:</span>
+                <span className="font-bold text-indigo-700 font-mono">Auto-Connected</span>
               </div>
               <input
                 type={showTokens['datadog'] ? 'text' : 'password'}
                 value={keys.datadogApiKey}
                 onChange={(e) => setKeys({ ...keys, datadogApiKey: e.target.value })}
-                placeholder="Datadog API Key"
-                className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-800 focus:outline-none"
-              />
-              <input
-                type={showTokens['datadogApp'] ? 'text' : 'password'}
-                value={keys.datadogAppKey}
-                onChange={(e) => setKeys({ ...keys, datadogAppKey: e.target.value })}
-                placeholder="Datadog App Key"
+                placeholder="Optional: Datadog / Vercel API Token"
                 className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-800 focus:outline-none"
               />
               {testStatus['datadog'] && (
