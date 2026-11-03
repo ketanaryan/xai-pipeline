@@ -8,10 +8,11 @@ import { AnalyticsDashboard } from '@/components/layers/AnalyticsDashboard';
 import { PolicySettings } from '@/components/layers/PolicySettings';
 import { UserSessionHeader, UserSession, PRESET_USERS } from '@/components/auth/UserSessionHeader';
 import { AuthScreen } from '@/components/auth/AuthScreen';
+import { ApiSettingsModal } from '@/components/modals/ApiSettingsModal';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { SDLCPhase, AIPrediction } from '@/lib/inferenceEngine';
 import { RoutingOutput } from '@/lib/routingLayer';
-import { Shield, AlertTriangle, CheckCircle2, Award } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle2, Award, KeyRound } from 'lucide-react';
 
 export default function Home() {
   const [pipelineState, setPipelineState] = useState<{
@@ -33,6 +34,7 @@ export default function Home() {
   const [riskThreshold, setRiskThreshold] = useState(0.75);
   const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
   const [isAuthChecking, setIsAuthChecking] = useState(true);
+  const [showApiModal, setShowApiModal] = useState(false);
 
   React.useEffect(() => {
     try {
@@ -150,8 +152,23 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            {currentUser && <UserSessionHeader currentUser={currentUser} onLogout={handleLogout} />}
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => setShowApiModal(true)}
+              className="px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-semibold text-slate-700 flex items-center gap-1.5 shadow-xs transition-all cursor-pointer"
+              title="Configure Jira, GitHub, SonarQube & Datadog API Credentials"
+            >
+              <KeyRound className="w-3.5 h-3.5 text-indigo-600" />
+              <span className="hidden sm:inline">API Integrations</span>
+            </button>
+            {currentUser && (
+              <UserSessionHeader 
+                currentUser={currentUser} 
+                onLogout={handleLogout} 
+                onOpenApiSettings={() => setShowApiModal(true)}
+              />
+            )}
           </div>
         </div>
       </header>
@@ -251,6 +268,8 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      {/* API Integrations Vault Modal */}
+      <ApiSettingsModal isOpen={showApiModal} onClose={() => setShowApiModal(false)} />
     </div>
   );
 }

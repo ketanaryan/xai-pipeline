@@ -95,9 +95,10 @@ export const ROLE_CONFIGS: Record<string, { label: string; badge: string; desc: 
 interface UserSessionHeaderProps {
   currentUser: UserSession;
   onLogout: () => void;
+  onOpenApiSettings?: () => void;
 }
 
-export function UserSessionHeader({ currentUser, onLogout }: UserSessionHeaderProps) {
+export function UserSessionHeader({ currentUser, onLogout, onOpenApiSettings }: UserSessionHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const roleInfo = ROLE_CONFIGS[currentUser.role] || ROLE_CONFIGS.DEVELOPER;
 
@@ -168,6 +169,23 @@ export function UserSessionHeader({ currentUser, onLogout }: UserSessionHeaderPr
                 <span>Verified PostgreSQL Session Active</span>
               </div>
             </div>
+
+            {/* API Integrations Button */}
+            {onOpenApiSettings && (
+              <div className="pt-3 border-b border-slate-100 pb-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    onOpenApiSettings();
+                  }}
+                  className="w-full py-2 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl font-bold font-mono text-xs transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                >
+                  <KeyRound className="w-3.5 h-3.5" />
+                  <span>API Keys & Integrations</span>
+                </button>
+              </div>
+            )}
 
             {/* Logout / Switch Account Action */}
             <div className="pt-3">

@@ -337,7 +337,24 @@ export function InputLayer({
     setData(`[Connecting to Enterprise Adapter: ${tool}...]\nAuthenticating session...`);
     
     try {
-      const res = await fetch(`/api/integration?tool=${encodeURIComponent(tool)}&repo=${encodeURIComponent(customRepo)}`);
+      const customHeaders: Record<string, string> = {};
+      try {
+        const stored = localStorage.getItem('xai_enterprise_keys');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.jiraToken) customHeaders['x-jira-token'] = parsed.jiraToken;
+          if (parsed.jiraDomain) customHeaders['x-jira-domain'] = parsed.jiraDomain;
+          if (parsed.githubToken) customHeaders['x-github-token'] = parsed.githubToken;
+          if (parsed.sonarToken) customHeaders['x-sonar-token'] = parsed.sonarToken;
+          if (parsed.datadogApiKey) customHeaders['x-datadog-key'] = parsed.datadogApiKey;
+        }
+      } catch (e) {
+        // Ignore
+      }
+
+      const res = await fetch(`/api/integration?tool=${encodeURIComponent(tool)}&repo=${encodeURIComponent(customRepo)}`, {
+        headers: customHeaders
+      });
       if (res.ok) {
         const result = await res.json();
         if (tool === 'GitHub Actions' && result.payload?.git_diff) {
