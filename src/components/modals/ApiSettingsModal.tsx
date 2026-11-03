@@ -77,7 +77,7 @@ export function ApiSettingsModal({ isOpen, onClose, onSaved }: ApiSettingsModalP
 
   const handleLoadSandbox = () => {
     const sandboxKeys: EnterpriseApiKeys = {
-      jiraDomain: "cogniguard.atlassian.net",
+      jiraDomain: "xai-enterprise.atlassian.net",
       jiraToken: "ATATT3xFfGF0d829bf429sandbox_verified_token",
       jiraProject: "SDLC-2026",
       githubToken: "ghp_mockSandboxKey948271049281740192847192",
@@ -90,7 +90,7 @@ export function ApiSettingsModal({ isOpen, onClose, onSaved }: ApiSettingsModalP
     };
     setKeys(sandboxKeys);
     setTestStatus({
-      jira: { status: 'success', message: 'Connected to cogniguard.atlassian.net' },
+      jira: { status: 'success', message: 'Connected to xai-enterprise.atlassian.net' },
       github: { status: 'success', message: 'GitHub REST API Authenticated' },
       sonar: { status: 'success', message: 'Quality Gate Stream Active' },
       datadog: { status: 'success', message: 'APM Cluster Live' }

@@ -115,11 +115,11 @@ export function AuthScreen({ onSuccess }: AuthScreenProps) {
           <span>ENTERPRISE GOVERNANCE CONSOLE</span>
         </div>
         <div className="flex items-center justify-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-lg shadow-indigo-500/30 text-white">
-            <Shield className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center shadow-lg shadow-indigo-500/30 overflow-hidden border border-indigo-500/40 p-1">
+            <img src="/icon.svg" alt="XAI Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-mono">
-            COGNIGUARD <span className="text-indigo-400">XAI</span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-mono uppercase">
+            XAI <span className="text-indigo-400">ENTERPRISE</span>
           </h1>
         </div>
         <p className="text-xs text-slate-400 font-mono">
@@ -232,7 +232,7 @@ export function AuthScreen({ onSuccess }: AuthScreenProps) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="user@cogniguard.io"
+                placeholder="user@xai-enterprise.com"
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 font-mono"
               />
             </div>

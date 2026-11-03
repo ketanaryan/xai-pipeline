@@ -134,16 +134,16 @@ export default function Home() {
       <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-20 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-indigo-600 to-slate-900 rounded-xl flex items-center justify-center shadow-md shadow-indigo-600/20 shrink-0 border border-indigo-500/30 text-white">
-              <Shield className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-indigo-600/20 shrink-0 border border-indigo-500/30 overflow-hidden bg-slate-900 p-1">
+              <img src="/icon.svg" alt="XAI Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-sm font-extrabold tracking-wider text-slate-900 font-mono uppercase">
-                  COGNIGUARD <span className="text-indigo-600">XAI</span>
+                  XAI <span className="text-indigo-600">ENTERPRISE</span>
                 </h1>
                 <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 uppercase tracking-wider">
-                  Enterprise Platform
+                  Explainability Platform
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 font-mono tracking-wide mt-0.5">
@@ -252,7 +252,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-slate-700">
             <Shield className="w-4 h-4 text-indigo-600" />
-            <span className="font-bold">CogniGuard XAI Platform</span>
+            <span className="font-bold">XAI Enterprise Platform</span>
             <span>&bull;</span>
             <span className="text-slate-500">Continuous DevSecOps Intelligence</span>
           </div>

@@ -13,8 +13,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CogniGuard XAI — Enterprise Explainability & DevSecOps Intelligence",
-  description: "Phase-Specific Explainable Artificial Intelligence (XAI) Framework for DevSecOps & Software Lifecycle Policy Governance",
+  title: "XAI Enterprise — Explainability & DevSecOps Intelligence Platform",
+  description: "Phase-Specific Explainable Artificial Intelligence (XAI) Framework for Enterprise DevSecOps & Software Lifecycle Policy Governance",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" }
+    ],
+    apple: [
+      { url: "/icon.svg", type: "image/svg+xml" }
+    ]
+  }
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
