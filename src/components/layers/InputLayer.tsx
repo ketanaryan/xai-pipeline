@@ -5,7 +5,7 @@ import { SDLCPhase } from '@/lib/inferenceEngine';
 import { 
   Database, FileCode2, MessagesSquare, HardDrive, TestTube, 
   ArrowRightCircle, Code, ShieldCheck, Activity, AlertTriangle, 
-  Copy, Trash2, Check, Sparkles, Terminal, Cpu, Zap 
+  Copy, Trash2, Check, Sparkles, Terminal, Cpu, Zap, Upload 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -237,6 +237,21 @@ export function InputLayer({
   const [isPulling, setIsPulling] = useState(false);
   const [customRepo, setCustomRepo] = useState("vercel/next.js");
   const [copied, setCopied] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      if (content) {
+        setData(content);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   const activePhaseDetails = PHASES.find(p => p.label === activePhase);
 
@@ -386,6 +401,25 @@ ${result.payload.git_diff}`
                 title="Public GitHub Repository"
               />
             )}
+            {/* Hidden file input for document / spec upload */}
+            <input 
+              ref={fileInputRef}
+              type="file" 
+              accept=".txt,.md,.json,.js,.ts,.py,.yaml,.yml,.log,.sql,.csv,.doc" 
+              onChange={handleFileUpload} 
+              className="hidden" 
+            />
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center justify-center px-3 py-1 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition-all shadow-sm"
+              title="Upload SRS Document, Spec, Code, or Telemetry Log"
+            >
+              <Upload className="w-3.5 h-3.5 mr-1.5 text-indigo-600" />
+              <span>Upload Spec / File</span>
+            </button>
+
             <button
               type="button"
               onClick={() => handleRealIntegration(INTEGRATIONS[activePhase].tool)}
